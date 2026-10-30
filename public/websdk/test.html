@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Test H5Player</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
+    <meta http-equiv="Expires" content="0" />
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+
+    <!-- Bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+    <link rel="icon" href="data:">
+</head>
+
+<body>
+    <div class="container"></div>
+    <h2>Sector</h2>
+        <video class="fn-normalBorder" id="testVideo" width="900" height="600" style="cursor:pointer; background-color: black;" muted></video>
+        <canvas class="fn-normalBorder" id="testCanvas" hidden></canvas>
+        <!-- <video id="testVideo" class="fn-normalBorder"
+            style="width:100%;height:100%;position:absolute;top:0;left:0;" width="500" height="300"></video>
+        <canvas id="testCanvas" class="fn-normalBorder" style="width:100%;height:100%;"></canvas>
+        <canvas id="h5_ivs" style="position: absolute;left: 0;top: 0;width: 100%;height: 100%;" width="500"
+            height="300"></canvas>
+        <canvas id="h5_detect" style="position: absolute;left: 0;top: 0;width: 100%;height: 100%;" width="500"
+            height="300"></canvas>
+        <canvas id="h5_draw" style="position: absolute;left: 0;top: 0;width: 100%;height: 100%;" width="500"
+            height="300"></canvas> -->
+    </div>
+
+    <div><button id="play-button" class="btn btn-dark">Play</button></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="module/PlayerControl.js"></script>
+
+    <script>
+
+        let playButton = document.getElementById('play-button');
+        let staButton = false;
+
+        var options = {
+            wsURL: 'ws://10.90.111.37:80/rtspoverwebsocket',
+            rtspURL: 'rtsp://10.90.111.37:554/cam/realmonitor?channel=1&subtype=0&proto=Private3',
+            username: 'admin',
+            password: 'admin1234.'
+        };
+
+        var videoPlayer = document.getElementById('testVideo');
+        var canvasPlayer = document.getElementById('testCanvas');
+        var player = new PlayerControl(options);
+
+        // playButton.addEventListener('click', function () {
+
+        //     if (staButton === false) {
+        //         player.on('WorkerReady', function () {
+        //             player.connect();
+        //             staButton = true;
+        //         });
+        //         player.on('DecodeStart', function(rs){
+        //             console.log(rs)
+        //         });
+        //     } else {
+        //         setfullScreen();
+        //         staButton = false;
+        //     }
+        //     player.init(canvasPlayer, videoPlayer);
+        // });
+       try{
+         player.on('WorkerReady', function(){
+            player.connect();
+        });
+        player.init(canvasPlayer, videoPlayer);
+        console.log('websocket connected');
+       }catch(error){
+        console.log('Ha ocurrido un error ', error.message());
+       }
+
+    </script>
+</body>
+
+</html>
